@@ -1,0 +1,22 @@
+{
+  "name": "digit-nepal-platform",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/web",
+    "apps/api"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace @digitnepal/api\" \"npm run dev --workspace @digitnepal/web\"",
+    "dev:web": "npm run dev --workspace @digitnepal/web",
+    "dev:api": "npm run start:dev --workspace @digitnepal/api",
+    "build": "npm run build --workspace @digitnepal/api && npm run build --workspace @digitnepal/web",
+    "lint": "npm run lint --workspace @digitnepal/api && npm run lint --workspace @digitnepal/web",
+    "prisma:generate": "npm run prisma:generate --workspace @digitnepal/api",
+    "prisma:migrate": "npm run prisma:migrate --workspace @digitnepal/api",
+    "prisma:seed": "npm run prisma:seed --workspace @digitnepal/api"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
