@@ -3,18 +3,21 @@
   "version": "1.0.0",
   "private": true,
   "workspaces": [
-    "apps/web",
-    "apps/api"
+    "frontend",
+    "backend"
   ],
   "scripts": {
-    "dev": "concurrently \"npm run dev --workspace @digitnepal/api\" \"npm run dev --workspace @digitnepal/web\"",
-    "dev:web": "npm run dev --workspace @digitnepal/web",
-    "dev:api": "npm run start:dev --workspace @digitnepal/api",
-    "build": "npm run build --workspace @digitnepal/api && npm run build --workspace @digitnepal/web",
-    "lint": "npm run lint --workspace @digitnepal/api && npm run lint --workspace @digitnepal/web",
-    "prisma:generate": "npm run prisma:generate --workspace @digitnepal/api",
-    "prisma:migrate": "npm run prisma:migrate --workspace @digitnepal/api",
-    "prisma:seed": "npm run prisma:seed --workspace @digitnepal/api"
+    "dev": "concurrently \"npm run start:dev --workspace @digitnepal/backend\" \"npm run dev --workspace @digitnepal/frontend\"",
+    "dev:web": "npm run dev --workspace @digitnepal/frontend",
+    "dev:api": "npm run start:dev --workspace @digitnepal/backend",
+    "build": "npm run build --workspace @digitnepal/backend && npm run build --workspace @digitnepal/frontend",
+    "clean:artifacts": "rm -rf frontend/.next backend/dist",
+    "clean:deps": "rm -rf node_modules frontend/node_modules backend/node_modules",
+    "clean": "npm run clean:artifacts",
+    "lint": "npm run lint --workspace @digitnepal/backend && npm run lint --workspace @digitnepal/frontend",
+    "prisma:generate": "npm run prisma:generate --workspace @digitnepal/backend",
+    "prisma:migrate": "npm run prisma:migrate --workspace @digitnepal/backend",
+    "prisma:seed": "npm run prisma:seed --workspace @digitnepal/backend"
   },
   "devDependencies": {
     "concurrently": "^9.1.2"

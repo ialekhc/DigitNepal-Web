@@ -1,0 +1,150 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --font-plus-jakarta: 'Plus Jakarta Sans';
+  --font-inter: 'Inter';
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-background font-sans text-foreground antialiased;
+  background-image: radial-gradient(circle at 82% 4%, rgba(255, 45, 111, 0.22), transparent 34%),
+    radial-gradient(circle at 16% 8%, rgba(199, 37, 104, 0.18), transparent 28%),
+    linear-gradient(175deg, #050816 0%, #0a132a 58%, #0a1a3b 100%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(248, 250, 252, 0.045) 0px,
+      rgba(248, 250, 252, 0.045) 1px,
+      transparent 1px,
+      transparent 42px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(248, 250, 252, 0.045) 0px,
+      rgba(248, 250, 252, 0.045) 1px,
+      transparent 1px,
+      transparent 42px
+    );
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+.glass {
+  @apply rounded-xl3 border border-white/15 bg-white/[0.04] backdrop-blur-lg shadow-panel;
+  box-shadow:
+    0 18px 44px rgba(2, 7, 21, 0.4),
+    inset 0 1px 0 rgba(248, 250, 252, 0.1);
+}
+
+.section-wrap {
+  @apply mx-auto w-full max-w-[90rem] px-4 sm:px-6 lg:px-10;
+}
+
+.reading-wrap {
+  @apply mx-auto w-full max-w-[45rem];
+}
+
+.hero-grid {
+  background-image:
+    linear-gradient(rgba(248, 250, 252, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(248, 250, 252, 0.08) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(circle at 55% 45%, black 46%, transparent 90%);
+}
+
+.gradient-light {
+  background: linear-gradient(
+    120deg,
+    rgba(255, 45, 111, 0.26) 0%,
+    rgba(199, 37, 104, 0.2) 45%,
+    rgba(10, 19, 42, 0.2) 100%
+  );
+  background-size: 160% 160%;
+  animation: gradient-light-shift 12s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+.neon-text {
+  background: linear-gradient(118deg, #ffffff 8%, #ff2d6f 44%, #c72568 88%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.kicker {
+  @apply inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-white/80;
+}
+
+.surface {
+  @apply rounded-3xl border border-white/15 bg-gradient-to-b from-white/[0.07] to-white/[0.03] backdrop-blur-lg;
+}
+
+.interactive-card {
+  @apply transition duration-300 ease-premium hover:-translate-y-1.5 hover:border-white/30 hover:shadow-glowPink;
+}
+
+.focus-ring {
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-pink/70 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-deep;
+}
+
+.nav-link {
+  @apply relative inline-flex items-center text-sm font-semibold text-white/80 transition-colors duration-300 ease-premium hover:text-white;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -0.35rem;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left center;
+  background: linear-gradient(90deg, #ff2d6f, #c72568);
+  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav-link[data-active='true']::after,
+.nav-link:hover::after,
+.nav-link:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.btn-magnetic {
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes gradient-light-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .gradient-light {
+    animation: none;
+  }
+}

@@ -17,36 +17,36 @@ services:
       timeout: 3s
       retries: 20
 
-  api:
+  backend:
     build:
       context: .
-      dockerfile: apps/api/Dockerfile
-    container_name: digit-nepal-api
+      dockerfile: backend/Dockerfile
+    container_name: digit-nepal-backend
     restart: unless-stopped
     env_file:
       - .env
     environment:
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/digit_nepal?schema=public
-      CORS_ORIGIN: http://localhost:3001
-    command: sh -c "npx prisma db push --schema=apps/api/prisma/schema.prisma && npm run prisma:seed --workspace @digitnepal/api && npm run start --workspace @digitnepal/api"
+      CORS_ORIGIN: http://localhost:3001,http://localhost:3000
+    command: sh -c "npx prisma db push --schema=backend/prisma/schema.prisma && npm run prisma:seed --workspace @digitnepal/backend && npm run start --workspace @digitnepal/backend"
     depends_on:
       postgres:
         condition: service_healthy
     ports:
       - '5001:5000'
 
-  web:
+  frontend:
     build:
       context: .
-      dockerfile: apps/web/Dockerfile
+      dockerfile: frontend/Dockerfile
       args:
         NEXT_PUBLIC_API_URL: http://localhost:5001/api
-    container_name: digit-nepal-web
+    container_name: digit-nepal-frontend
     restart: unless-stopped
     environment:
       NEXT_PUBLIC_API_URL: http://localhost:5001/api
     depends_on:
-      - api
+      - backend
     ports:
       - '3001:3000'
 
