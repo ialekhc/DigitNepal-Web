@@ -198,7 +198,7 @@ async function main() {
           },
           {
             id: 'team-member-2',
-            name: 'Business Development Manager',
+            name: 'Arun K. Chaudhary',
             designation: 'Business Development Manager',
             description:
               'Drives client partnerships, growth opportunities, and strategic collaboration to expand Digit Nepal services.',
