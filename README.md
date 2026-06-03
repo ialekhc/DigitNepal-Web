@@ -1,11 +1,8 @@
 # Digit Nepal Website
 
-Professional company website platform for Digit Nepal with a clean monorepo structure:
+Frontend-only company website for Digit Nepal built with Next.js, React, Tailwind CSS, Framer Motion, React Hook Form, and Zod.
 
-- `frontend`: Next.js + React + Tailwind + Framer Motion + shadcn/ui
-- `backend`: NestJS + Prisma + PostgreSQL + JWT/RBAC
-
-## Project Structure
+## Structure
 
 ```text
 DigitNepal-Web/
@@ -13,14 +10,9 @@ DigitNepal-Web/
 │   ├── app/
 │   ├── components/
 │   ├── constants/
-│   ├── hooks/
 │   ├── layouts/
 │   ├── lib/
-│   ├── services/
-│   └── package.json
-├── backend/
-│   ├── src/
-│   ├── prisma/
+│   ├── public/
 │   └── package.json
 ├── .env.example
 ├── docker-compose.yml
@@ -32,71 +24,33 @@ DigitNepal-Web/
 
 - Node.js 20+
 - npm 10+
-- PostgreSQL 16+ (or Docker)
-
-## Environment Setup
-
-1. Copy environment file:
-
-```bash
-cp .env.example .env
-```
-
-2. Update required values in `.env`:
-
-- `DATABASE_URL`
-- `JWT_SECRET`
-- `NEXT_PUBLIC_API_URL`
-- Cloudinary keys (if media upload is required)
 
 ## Local Development
 
-Install dependencies:
-
 ```bash
 npm install
-```
-
-Run frontend + backend together:
-
-```bash
 npm run dev
 ```
 
-- Frontend: `http://localhost:3000`
-- Backend API: `http://localhost:5000/api`
-
-Run individually:
-
-```bash
-npm run dev:web
-npm run dev:api
-```
-
-## Database Commands
-
-```bash
-npm run prisma:generate
-npm run prisma:migrate
-npm run prisma:seed
-```
+Website runs at `http://localhost:3000`.
 
 ## Production Build
 
 ```bash
 npm run build
+npm run start
 ```
 
-## Docker (Frontend + Backend + Postgres)
+## Docker
 
 ```bash
 docker compose up --build
 ```
 
-- Frontend: `http://localhost:3001`
-- Backend: `http://localhost:5001/api`
+Website runs at `http://localhost:3001`.
 
 ## Notes
 
-- This repository is cleaned to keep only required runtime and source files.
-- Deployment-provider-specific files and configs were removed.
+- The project is now frontend-only.
+- Contact, event registration, and career application forms work as frontend mailto flows.
+- All public content is driven from local constants and fallback data inside `frontend/lib/`.

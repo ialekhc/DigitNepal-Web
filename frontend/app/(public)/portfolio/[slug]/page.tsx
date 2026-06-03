@@ -1,42 +1,22 @@
-'use client';
-
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
-import { useMemo } from 'react';
+import { notFound } from 'next/navigation';
 
 import { SectionHeading } from '@/components/sections/section-heading';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { useApplications } from '@/hooks/use-public-content';
+import { fallbackApplications } from '@/lib/data/fallback';
 
-export default function PortfolioDetailPage() {
-  const applicationsQuery = useApplications();
-  const params = useParams<{ slug: string }>();
-  const slug = typeof params.slug === 'string' ? params.slug : '';
+type PortfolioDetailPageProps = {
+  params: Promise<{ slug: string }>;
+};
 
-  const project = useMemo(
-    () => applicationsQuery.data?.find((item) => item.slug === slug),
-    [applicationsQuery.data, slug],
-  );
-
-  if (applicationsQuery.isLoading) {
-    return (
-      <div className="section-wrap py-16 sm:py-20">
-        <p className="text-sm text-slate-300/80">Loading project details...</p>
-      </div>
-    );
-  }
+export default async function PortfolioDetailPage({ params }: PortfolioDetailPageProps) {
+  const { slug } = await params;
+  const project = fallbackApplications.find((item) => item.slug === slug);
 
   if (!project) {
-    return (
-      <div className="section-wrap py-16 sm:py-20">
-        <SectionHeading eyebrow="[ Portfolio ]" title="Project Not Found" />
-        <Button asChild>
-          <Link href="/portfolio">Back to Portfolio</Link>
-        </Button>
-      </div>
-    );
+    notFound();
   }
 
   return (
@@ -62,7 +42,7 @@ export default function PortfolioDetailPage() {
       <Card className="mt-4">
         <h3 className="font-display text-xl font-semibold">Screenshots</h3>
         <div className="mt-3 h-44 rounded-lg border border-white/10 bg-[#112147] p-4 text-sm text-slate-300/75">
-          Screenshot gallery area (connect media records for this project).
+          Screenshot gallery area reserved for future frontend image showcase.
         </div>
       </Card>
 

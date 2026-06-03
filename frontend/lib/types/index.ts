@@ -47,15 +47,20 @@ export type Blog = {
   title: string;
   slug: string;
   imageUrl?: string | null;
+  category: string;
   excerpt: string;
   content: string;
   tags: string[];
+  readTime?: string | null;
+  featured?: boolean;
   status: 'DRAFT' | 'PUBLISHED';
   publishedAt?: string | null;
-  author?: {
-    id: string;
-    name: string;
-  };
+  author?: string | null;
+  references?: {
+    title: string;
+    source: string;
+    url: string;
+  }[];
 };
 
 export type Inquiry = {

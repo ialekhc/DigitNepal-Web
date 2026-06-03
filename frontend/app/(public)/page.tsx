@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import {
   AnimatePresence,
   motion,
@@ -7,10 +8,11 @@ import {
 } from 'framer-motion';
 import {
   ArrowRight,
-  CalendarClock,
   CheckCircle2,
   Code2,
   Lightbulb,
+  MessageCircle,
+  Phone,
   Rocket,
   Sparkles,
   Star,
@@ -19,11 +21,11 @@ import Link from 'next/link';
 import { useMemo, useState } from 'react';
 
 import { AnimatedCounter } from '@/components/common/animated-counter';
-import { ContactForm } from '@/components/sections/contact-form';
 import { SectionHeading } from '@/components/sections/section-heading';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { fallbackCompanyPhotos } from '@/lib/data/fallback';
 import {
   buttonHoverGlow,
   cardHover,
@@ -44,6 +46,7 @@ import {
   trustStats,
   upcomingEventsPreview,
   whyChooseItems,
+  companyInfo,
 } from '@/lib/content/site-content';
 
 const heroFloatingCards = [
@@ -66,13 +69,6 @@ const heroFloatingCards = [
 
 const portfolioFilters = ['All', 'SaaS', 'Web App', 'Mobile'] as const;
 
-function getDaysUntil(dateLabel: string) {
-  const now = new Date();
-  const target = new Date(dateLabel);
-  const diff = target.getTime() - now.getTime();
-  return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
-}
-
 export default function HomePage() {
   const reduceMotion = useReducedMotion();
   const [activeFilter, setActiveFilter] = useState<(typeof portfolioFilters)[number]>('All');
@@ -86,7 +82,6 @@ export default function HomePage() {
   }, [activeFilter]);
 
   const nearestEvent = upcomingEventsPreview[0];
-  const daysUntilNearest = nearestEvent ? getDaysUntil(nearestEvent.date) : 0;
 
   return (
     <div className="overflow-hidden">
@@ -128,7 +123,7 @@ export default function HomePage() {
             <motion.div className="mt-8 flex flex-wrap items-center gap-3" variants={staggerContainer} initial="hidden" animate="show">
               <motion.div variants={buttonHoverGlow} initial="rest" whileHover="hover">
                 <Button asChild size="lg" magnetic>
-                  <Link href="/contact">
+                  <Link href={companyInfo.phoneHref}>
                     Start Your Project
                     <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                   </Link>
@@ -244,6 +239,171 @@ export default function HomePage() {
             </motion.article>
           ))}
         </motion.div>
+      </section>
+
+      <section className="section-wrap pb-16 sm:pb-20">
+        <div className="grid gap-8 lg:grid-cols-[0.92fr_1.08fr]">
+          <motion.div variants={slideInLeft} initial="hidden" whileInView="show" viewport={{ once: true }}>
+            <SectionHeading
+              eyebrow="[ Inside Digit Nepal ]"
+              title="A closer look at our people, workspace, and creative process"
+              description="These moments reflect how Digit Nepal collaborates, thinks visually, and turns ideas into practical digital work."
+              className="mb-0"
+            />
+            <div className="mt-6 space-y-3">
+              {fallbackCompanyPhotos.map((photo) => (
+                <Card key={photo.id} className="surface p-4">
+                  <h3 className="font-display text-base font-semibold text-white">{photo.title}</h3>
+                  <p className="mt-1 text-sm text-slate-300/85">{photo.description}</p>
+                </Card>
+              ))}
+            </div>
+          </motion.div>
+
+          <motion.div
+            className="grid gap-5 lg:grid-cols-[1.08fr_0.92fr]"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.2 }}
+          >
+            <motion.div variants={fadeUp}>
+              <Card className="surface overflow-hidden border-white/12 bg-white/[0.04] p-2">
+                <div className="relative aspect-[16/11] w-full overflow-hidden rounded-[2rem]">
+                  <Image
+                    src={fallbackCompanyPhotos[0].imageUrl}
+                    alt={fallbackCompanyPhotos[0].alt}
+                    fill
+                    className="object-cover"
+                    sizes="(min-width: 1024px) 28vw, 100vw"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/92 via-slate-950/45 to-transparent p-4">
+                    <p className="font-display text-sm font-semibold text-white">{fallbackCompanyPhotos[0].title}</p>
+                  </div>
+                </div>
+              </Card>
+            </motion.div>
+
+            <motion.div variants={fadeUp} className="grid gap-5 sm:grid-cols-2 lg:grid-cols-1">
+              <Card className="surface mx-auto w-full max-w-[300px] overflow-hidden border-white/12 bg-white/[0.04] p-2 sm:max-w-none lg:max-w-[280px] lg:justify-self-end">
+                <div className="relative aspect-square w-full overflow-hidden rounded-full border border-white/10">
+                  <Image
+                    src={fallbackCompanyPhotos[1].imageUrl}
+                    alt={fallbackCompanyPhotos[1].alt}
+                    fill
+                    className="object-cover"
+                    sizes="(min-width: 1024px) 16vw, 50vw"
+                  />
+                </div>
+              </Card>
+
+              <Card className="surface overflow-hidden border-white/12 bg-white/[0.04] p-2">
+                <div
+                  className="relative aspect-[5/4] w-full overflow-hidden"
+                  style={{ borderRadius: '34% 66% 44% 56% / 24% 31% 69% 76%' }}
+                >
+                  <Image
+                    src={fallbackCompanyPhotos[1].imageUrl}
+                    alt={fallbackCompanyPhotos[1].alt}
+                    fill
+                    className="object-cover"
+                    sizes="(min-width: 1024px) 18vw, 100vw"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/92 via-slate-950/45 to-transparent p-4">
+                    <p className="font-display text-sm font-semibold text-white">{fallbackCompanyPhotos[1].title}</p>
+                  </div>
+                </div>
+              </Card>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      <section className="section-wrap pb-16 sm:pb-20">
+        <div className="grid items-start gap-6 lg:grid-cols-[0.95fr_1.05fr]">
+          <motion.div variants={slideInLeft} initial="hidden" whileInView="show" viewport={{ once: true }}>
+            <SectionHeading
+              eyebrow="[ Leadership Milestone ]"
+              title="Global Exposure Through Google Programs"
+              description="From leadership exposure at Google Australia to community participation through Google Developer Groups, Digit Nepal continues to learn, connect, and grow with a global technology mindset."
+              className="mb-0"
+            />
+            <Card className="surface mt-6">
+              <h3 className="font-display text-xl font-semibold text-white">Global inspiration, local impact</h3>
+              <p className="mt-3 text-sm leading-relaxed text-slate-300/88">
+                Experiences like these strengthen Digit Nepal&apos;s vision to build modern digital products with international perspective while creating meaningful impact from Nepal.
+              </p>
+            </Card>
+            <Card className="surface mt-4">
+              <h3 className="font-display text-lg font-semibold text-white">Business Development Manager at Google Developer Groups Program</h3>
+              <p className="mt-3 text-sm leading-relaxed text-slate-300/88">
+                Our Business Development Manager&apos;s participation in the Google Developer Groups program reflects Digit Nepal&apos;s commitment to community learning, ecosystem engagement, and staying closely connected with emerging technology conversations.
+              </p>
+            </Card>
+          </motion.div>
+
+          <motion.div
+            className="grid gap-5 lg:grid-cols-[0.92fr_1.08fr]"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.2 }}
+          >
+            <motion.div variants={fadeUp}>
+              <Card className="surface overflow-hidden border-white/12 bg-white/[0.04] p-2">
+                <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2.2rem]">
+                  <Image
+                    src="/company/google-australia-visit-2.jpg"
+                    alt="Digit Nepal CEO during Google Australia visit"
+                    fill
+                    className="object-cover"
+                    sizes="(min-width: 1024px) 28vw, 100vw"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/94 via-slate-950/45 to-transparent p-4">
+                    <p className="font-display text-sm font-semibold text-white">CEO at Google Australia</p>
+                  </div>
+                </div>
+              </Card>
+            </motion.div>
+            <div className="grid gap-5">
+              <motion.div variants={fadeUp}>
+                <Card className="surface overflow-hidden border-white/12 bg-white/[0.04] p-2">
+                  <div className="relative aspect-square w-full overflow-hidden rounded-full">
+                    <Image
+                      src="/company/google-australia-visit-1.jpg"
+                      alt="Google Australia visit visual"
+                      fill
+                      className="object-cover"
+                      sizes="(min-width: 1024px) 24vw, 100vw"
+                    />
+                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/94 via-slate-950/45 to-transparent p-4">
+                      <p className="font-display text-sm font-semibold text-white">Google Australia Visit</p>
+                    </div>
+                  </div>
+                </Card>
+              </motion.div>
+              <motion.div variants={fadeUp}>
+                <Card className="surface overflow-hidden border-white/12 bg-white/[0.04] p-2">
+                  <div
+                    className="relative aspect-[4/5] w-full overflow-hidden"
+                    style={{ borderRadius: '32% 68% 58% 42% / 18% 28% 72% 82%' }}
+                  >
+                    <Image
+                      src="/team/business-development-manager.jpg"
+                      alt="Digit Nepal Business Development Manager attending Google Developer Groups Program"
+                      fill
+                      className="object-cover object-top"
+                      sizes="(min-width: 1024px) 24vw, 100vw"
+                    />
+                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/94 via-slate-950/45 to-transparent p-4">
+                      <p className="font-display text-sm font-semibold text-white">Google Developer Groups Program</p>
+                    </div>
+                  </div>
+                </Card>
+              </motion.div>
+            </div>
+          </motion.div>
+        </div>
       </section>
 
       <section className="section-wrap pb-16 sm:pb-20">
@@ -371,15 +531,14 @@ export default function HomePage() {
                 ))}
               </div>
               <div className="rounded-2xl border border-white/15 bg-gradient-to-b from-brand-pink/16 to-transparent p-4">
-                <p className="text-xs uppercase tracking-[0.12em] text-brand-pink">Next Event Countdown</p>
-                <p className="mt-2 font-display text-4xl font-semibold text-white">{daysUntilNearest}</p>
-                <p className="text-sm text-slate-200/85">days until {nearestEvent?.name}</p>
-                <p className="mt-4 text-xs text-slate-300/80">{nearestEvent?.date}</p>
+                <p className="text-xs uppercase tracking-[0.12em] text-brand-pink">Upcoming Events</p>
+                <p className="mt-2 font-display text-3xl font-semibold text-white">Coming Soon</p>
+                <p className="text-sm text-slate-200/85">{nearestEvent?.name}</p>
                 <p className="text-xs text-slate-300/80">{nearestEvent?.location}</p>
                 <Button className="mt-5" variant="outline" asChild>
                   <Link href="/events">
                     View Events
-                    <CalendarClock className="ml-2 h-4 w-4" />
+                    <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
               </div>
@@ -437,7 +596,7 @@ export default function HomePage() {
             </div>
             <motion.div variants={buttonHoverGlow} initial="rest" whileHover="hover">
               <Button size="lg" asChild magnetic>
-                <Link href="/contact">Start Your Project</Link>
+                <Link href={companyInfo.phoneHref}>Start Your Project</Link>
               </Button>
             </motion.div>
           </div>
@@ -447,11 +606,32 @@ export default function HomePage() {
       <section id="contact" className="section-wrap pb-20">
         <SectionHeading
           eyebrow="[ Contact ]"
-          title="Let&apos;s Design Your Next Competitive Advantage"
-          description="Share your goals, scope, and timeline. We will map a clear, scalable delivery plan."
+          title="Connect Directly with Digit Nepal"
+          description="Call or WhatsApp us directly to discuss your project, training enrollment, or business inquiry."
         />
-        <Card className="surface p-6 sm:p-8">
-          <ContactForm />
+        <Card className="surface border-brand-pink/30 bg-gradient-to-r from-brand-pink/12 via-transparent to-brand-rose/10 p-6 sm:p-8">
+          <div className="grid gap-5 md:grid-cols-[1fr_auto] md:items-center">
+            <div>
+              <h3 className="font-display text-2xl font-semibold text-white">No forms, just direct communication</h3>
+              <p className="mt-2 max-w-2xl text-sm text-slate-300/88">
+                Reach our team instantly for startup projects, digital services, events, courses, and collaboration opportunities.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              <Button asChild magnetic>
+                <Link href={companyInfo.phoneHref}>
+                  <Phone className="mr-2 h-4 w-4" />
+                  Call Now
+                </Link>
+              </Button>
+              <Button asChild variant="outline">
+                <Link href={companyInfo.whatsappHref} target="_blank" rel="noreferrer">
+                  <MessageCircle className="mr-2 h-4 w-4" />
+                  WhatsApp Us
+                </Link>
+              </Button>
+            </div>
+          </div>
         </Card>
       </section>
     </div>

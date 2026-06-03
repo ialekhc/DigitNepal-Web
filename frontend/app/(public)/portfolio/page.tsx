@@ -1,12 +1,10 @@
-'use client';
-
 import Link from 'next/link';
 
 import { SectionHeading } from '@/components/sections/section-heading';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { useApplications } from '@/hooks/use-public-content';
+import { fallbackApplications } from '@/lib/data/fallback';
 
 const caseStudies = [
   {
@@ -38,8 +36,6 @@ const successMetrics = [
 ] as const;
 
 export default function PortfolioPage() {
-  const applicationsQuery = useApplications();
-
   return (
     <div className="section-wrap py-16 sm:py-20">
       <SectionHeading
@@ -50,7 +46,7 @@ export default function PortfolioPage() {
 
       <SectionHeading className="mt-10" eyebrow="[ Projects ]" title="Completed Work" />
       <div className="grid gap-4 md:grid-cols-2">
-        {applicationsQuery.data?.map((project) => (
+        {fallbackApplications.map((project) => (
           <Card key={project.id}>
             <h3 className="font-display text-lg font-semibold">{project.title}</h3>
             <p className="mt-2 text-sm text-slate-300/85">{project.description}</p>

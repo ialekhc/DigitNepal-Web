@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
+import { companyInfo } from '@/lib/content/site-content';
 import { fadeUp } from '@/lib/motion';
 
 const particles = [
@@ -55,10 +56,12 @@ export function FooterCTA() {
 
             <div className="mt-4 flex flex-wrap gap-2.5">
               <Button asChild magnetic>
-                <Link href="/contact">Start Your Project</Link>
+                <Link href={companyInfo.phoneHref}>Start Your Project</Link>
               </Button>
               <Button asChild variant="outline">
-                <Link href="/contact?type=consultation">Schedule Consultation</Link>
+                <Link href={companyInfo.whatsappHref} target="_blank" rel="noreferrer">
+                  Schedule Consultation
+                </Link>
               </Button>
             </div>
           </div>

@@ -1,8 +1,11 @@
-import { EventRegistrationForm } from '@/components/sections/event-registration-form';
+import { MessageCircle, Phone } from 'lucide-react';
+import Link from 'next/link';
+
 import { SectionHeading } from '@/components/sections/section-heading';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { eventsContent } from '@/lib/content/site-content';
+import { companyInfo, eventsContent } from '@/lib/content/site-content';
 
 export default function EventsPage() {
   return (
@@ -21,7 +24,7 @@ export default function EventsPage() {
             <h3 className="mt-3 font-display text-lg font-semibold">{event.name}</h3>
             <p className="mt-2 text-sm text-slate-300/85">{event.description}</p>
             <p className="mt-3 text-xs text-slate-300/75">
-              {event.date} • {event.time} • {event.venue}
+              Coming Soon
             </p>
           </Card>
         ))}
@@ -54,9 +57,26 @@ export default function EventsPage() {
         </Card>
       </div>
 
-      <SectionHeading className="mt-10" eyebrow="[ Registration ]" title="Register for an Event" />
-      <Card>
-        <EventRegistrationForm />
+      <SectionHeading className="mt-10" eyebrow="[ Registration ]" title="Register by Phone or WhatsApp" />
+      <Card className="surface border-brand-pink/30 bg-gradient-to-r from-brand-pink/14 to-transparent">
+        <h3 className="font-display text-xl font-semibold text-white">Reserve your seat directly</h3>
+        <p className="mt-2 text-sm text-slate-300/86">
+          Contact Digit Nepal to register for workshops, hackathons, and community programs without filling out a form.
+        </p>
+        <div className="mt-5 flex flex-wrap gap-3">
+          <Button asChild magnetic>
+            <Link href={companyInfo.phoneHref}>
+              <Phone className="mr-2 h-4 w-4" />
+              Call {companyInfo.phone}
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href={companyInfo.whatsappHref} target="_blank" rel="noreferrer">
+              <MessageCircle className="mr-2 h-4 w-4" />
+              Register on WhatsApp
+            </Link>
+          </Button>
+        </div>
       </Card>
     </div>
   );

@@ -1,27 +1,24 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { ChevronDown, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { SocialLinks } from '@/components/common/SocialLinks';
-import { megaMenu, primaryNavigation } from '@/constants/navigation';
+import { primaryNavigation } from '@/constants/navigation';
 import { mobileMenuSlide, navbarBlur, staggerContainer } from '@/lib/motion';
+import { companyInfo } from '@/lib/content/site-content';
 import { cn } from '@/lib/utils';
 
 import { Button } from '../ui/button';
-
-const megaLabels = new Set(['Services', 'Solutions', 'Training'] as const);
-type MegaKey = keyof typeof megaMenu;
 
 export function SiteNavbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [activeMega, setActiveMega] = useState<MegaKey | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
@@ -32,7 +29,6 @@ export function SiteNavbar() {
 
   useEffect(() => {
     setOpen(false);
-    setActiveMega(null);
   }, [pathname]);
 
   const isActive = (href: string) => {
@@ -53,68 +49,18 @@ export function SiteNavbar() {
           </Link>
 
           <nav className="hidden items-center gap-6 lg:flex">
-            {primaryNavigation.map((item) => {
-              const isMega = megaLabels.has(item.label as MegaKey);
-
-              if (isMega) {
-                const key = item.label as MegaKey;
-                return (
-                  <div
-                    key={item.label}
-                    className="relative"
-                    onMouseEnter={() => setActiveMega(key)}
-                    onMouseLeave={() => setActiveMega(null)}
-                  >
-                    <button
-                      className="nav-link focus-ring rounded-md px-0.5"
-                      aria-expanded={activeMega === key}
-                      aria-haspopup="menu"
-                      onClick={() => setActiveMega((prev) => (prev === key ? null : key))}
-                    >
-                      {item.label}
-                      <ChevronDown className={cn('ml-1 h-4 w-4 transition', activeMega === key ? 'rotate-180' : '')} />
-                    </button>
-
-                    <AnimatePresence>
-                      {activeMega === key ? (
-                        <motion.div
-                          initial={{ opacity: 0, y: 12 }}
-                          animate={{ opacity: 1, y: 0, transition: { duration: 0.22, ease: [0.22, 1, 0.36, 1] } }}
-                          exit={{ opacity: 0, y: 8, transition: { duration: 0.18 } }}
-                          className="absolute left-1/2 top-10 w-[32rem] -translate-x-1/2 rounded-3xl border border-white/15 bg-[#071022]/95 p-5 shadow-panel backdrop-blur-xl"
-                          role="menu"
-                        >
-                          <div className="grid gap-3">
-                            {megaMenu[key].map((subItem) => (
-                              <Link
-                                key={subItem.title}
-                                href={subItem.href}
-                                className="group rounded-2xl border border-white/10 bg-white/[0.02] p-4 transition hover:border-brand-pink/35 hover:bg-white/[0.08]"
-                              >
-                                <p className="font-display text-sm font-semibold text-white group-hover:text-brand-pink">
-                                  {subItem.title}
-                                </p>
-                                <p className="mt-1 text-xs leading-relaxed text-slate-300/85">
-                                  {subItem.description}
-                                </p>
-                              </Link>
-                            ))}
-                          </div>
-                        </motion.div>
-                      ) : null}
-                    </AnimatePresence>
-                  </div>
-                );
-              }
-
-              return (
-                <Link key={item.href} href={item.href} className="nav-link focus-ring rounded-md px-0.5" data-active={isActive(item.href)}>
-                  {item.label}
-                </Link>
-              );
-            })}
+            {primaryNavigation.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="nav-link focus-ring rounded-md px-0.5"
+                data-active={isActive(item.href)}
+              >
+                {item.label}
+              </Link>
+            ))}
             <Button asChild size="sm" magnetic>
-              <Link href="/contact">Start Your Project</Link>
+              <Link href={companyInfo.phoneHref}>Start Your Project</Link>
             </Button>
           </nav>
 

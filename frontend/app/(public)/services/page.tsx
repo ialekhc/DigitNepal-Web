@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { fadeUp, slideInLeft, slideInRight, staggerContainer } from '@/lib/motion';
-import { servicesDetailed } from '@/lib/content/site-content';
+import { companyInfo, servicesDetailed } from '@/lib/content/site-content';
 
 const serviceSignals = [
   { title: 'Scalable Architecture', icon: Layers3 },
@@ -71,61 +71,52 @@ export default function ServicesPage() {
       </div>
 
       <motion.div
-        className="mt-10 space-y-5"
+        className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3"
         variants={staggerContainer}
         initial="hidden"
         whileInView="show"
         viewport={{ once: true, amount: 0.2 }}
       >
         {servicesDetailed.map((service, index) => (
-          <motion.article key={service.title} variants={fadeUp}>
-            <Card id={service.title.toLowerCase().replace(/\s+/g, '-')} className="surface">
-              <div className="grid gap-5 lg:grid-cols-[1fr_1.1fr]">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.08em] text-brand-pink">Service {String(index + 1).padStart(2, '0')}</p>
-                  <h3 className="mt-2 font-display text-2xl font-semibold text-white">{service.title}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-slate-300/88">{service.overview}</p>
+          <motion.article key={service.id} variants={fadeUp}>
+            <Card id={service.id} className="surface flex h-full flex-col">
+              <div>
+                <p className="text-xs uppercase tracking-[0.08em] text-brand-pink">
+                  Service {String(index + 1).padStart(2, '0')}
+                </p>
+                <h3 className="mt-2 font-display text-2xl font-semibold text-white">{service.name}</h3>
+                <p className="mt-3 text-sm font-semibold text-accent-cyan">{service.tagline}</p>
+                <p className="mt-4 text-sm leading-relaxed text-slate-300/88">{service.description}</p>
+              </div>
 
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {service.technologies.map((tech) => (
-                      <Badge key={tech} variant="muted">{tech}</Badge>
-                    ))}
-                  </div>
-                </div>
+              <div className="mt-5 rounded-2xl border border-white/12 bg-white/[0.03] p-4">
+                <p className="text-xs uppercase tracking-[0.08em] text-slate-300/75">Key Benefits</p>
+                <ul className="mt-3 space-y-2 text-sm text-slate-300/86">
+                  {service.benefits.slice(0, 3).map((item) => (
+                    <li key={item} className="flex items-start gap-2">
+                      <span className="mt-1 h-1.5 w-1.5 rounded-full bg-brand-pink" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div className="rounded-2xl border border-white/12 bg-white/[0.03] p-4">
-                    <p className="text-xs uppercase tracking-[0.08em] text-slate-300/75">Benefits</p>
-                    <ul className="mt-2 space-y-2 text-sm text-slate-300/86">
-                      {service.benefits.map((item) => (
-                        <li key={item} className="flex items-start gap-2">
-                          <span className="mt-1 h-1.5 w-1.5 rounded-full bg-brand-pink" />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div className="rounded-2xl border border-white/12 bg-white/[0.03] p-4">
-                    <p className="text-xs uppercase tracking-[0.08em] text-slate-300/75">Process</p>
-                    <div className="mt-2 space-y-2">
-                      {service.process.map((phase, phaseIndex) => (
-                        <p key={phase} className="text-sm text-slate-300/86">
-                          <span className="mr-2 text-brand-pink">{phaseIndex + 1}.</span>
-                          {phase}
-                        </p>
-                      ))}
-                    </div>
-                  </div>
+              <div className="mt-4">
+                <p className="text-xs uppercase tracking-[0.08em] text-slate-300/75">Core Offerings</p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {service.offerings.slice(0, 4).map((offering) => (
+                    <Badge key={offering} variant="muted">{offering}</Badge>
+                  ))}
                 </div>
               </div>
 
-              <div className="mt-5 rounded-2xl border border-white/12 bg-white/[0.02] p-4">
-                <p className="text-xs uppercase tracking-[0.08em] text-slate-300/75">Portfolio Examples</p>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {service.portfolioExamples.map((example) => (
-                    <Badge key={example}>{example}</Badge>
-                  ))}
-                </div>
+              <div className="mt-auto pt-6">
+                <Button variant="outline" asChild className="w-full sm:w-auto">
+                  <Link href={`/services/${service.id}`}>
+                    Explore More
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
               </div>
             </Card>
           </motion.article>
@@ -144,7 +135,7 @@ export default function ServicesPage() {
           </div>
           <div className="flex flex-wrap gap-3">
             <Button asChild magnetic>
-              <Link href="/contact">Start Your Project</Link>
+              <Link href={companyInfo.phoneHref}>Start Your Project</Link>
             </Button>
             <Button variant="outline" asChild>
               <Link href="/solutions">

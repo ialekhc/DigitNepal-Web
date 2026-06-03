@@ -53,7 +53,7 @@ export function Footer() {
             viewport={{ once: true, amount: 0.14 }}
             className="rounded-[1.7rem] border border-white/12 bg-white/[0.03] px-5 py-6 shadow-panel backdrop-blur-xl sm:px-6 sm:py-7 lg:px-8 lg:py-8"
           >
-            <div className="grid gap-7 xl:grid-cols-[minmax(0,1.15fr)_minmax(0,2fr)]">
+            <div className="grid gap-7 xl:grid-cols-[minmax(0,1.05fr)_minmax(0,1.7fr)_minmax(0,0.78fr)]">
               <div className="xl:pr-8 xl:border-r xl:border-white/12">
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
@@ -89,8 +89,12 @@ export function Footer() {
                     <span>{companyInfo.phone}</span>
                   </Link>
                 </div>
+              </div>
 
-                <div className="mt-4 flex flex-wrap gap-2.5 text-xs text-slate-200/85">
+              <FooterLinks groups={footerNavGroups} className="xl:px-2" />
+
+              <div className="xl:border-l xl:border-white/12 xl:pl-8">
+                <div className="flex flex-wrap gap-2.5 text-xs text-slate-200/85 xl:flex-col xl:items-start">
                   <p className="inline-flex items-center gap-2 rounded-full border border-white/16 bg-white/[0.04] px-3 py-1.5">
                     <Clock3 className="h-3.5 w-3.5 text-brand-pink" />
                     <span>Mon - Sat | 9:00 AM - 6:00 PM</span>
@@ -100,10 +104,8 @@ export function Footer() {
                   </p>
                 </div>
 
-                <FooterSocials />
+                <FooterSocials className="xl:mt-5" />
               </div>
-
-              <FooterLinks groups={footerNavGroups} />
             </div>
 
             <FooterBottom />

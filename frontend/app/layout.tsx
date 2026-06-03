@@ -1,7 +1,5 @@
 import type { Metadata } from 'next';
 
-import { Providers } from '@/components/providers';
-
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -37,9 +35,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
-      <body className="selection:bg-brand-pink/30 selection:text-white">
-        <Providers>{children}</Providers>
-      </body>
+      <body className="selection:bg-brand-pink/30 selection:text-white">{children}</body>
     </html>
   );
 }

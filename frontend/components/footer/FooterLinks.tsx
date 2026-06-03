@@ -10,13 +10,14 @@ import { cn } from '@/lib/utils';
 
 type FooterLinksProps = {
   groups: FooterNavGroup[];
+  className?: string;
 };
 
-export function FooterLinks({ groups }: FooterLinksProps) {
+export function FooterLinks({ groups, className }: FooterLinksProps) {
   const [openGroup, setOpenGroup] = useState(groups[0]?.title ?? '');
 
   return (
-    <div>
+    <div className={className}>
       <div className="hidden grid-cols-2 gap-6 md:grid xl:grid-cols-4">
         {groups.map((group, index) => (
           <motion.div

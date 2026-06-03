@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { fadeUp, slideInLeft, slideInRight, staggerContainer } from '@/lib/motion';
-import { trainingContent } from '@/lib/content/site-content';
+import { companyInfo, trainingContent } from '@/lib/content/site-content';
 
 const learningJourney = [
   {
@@ -133,7 +133,7 @@ export default function TrainingPage() {
               </div>
 
               <Button className="mt-5 w-full" asChild magnetic>
-                <Link href="/contact">
+                <Link href={companyInfo.whatsappHref} target="_blank" rel="noreferrer">
                   Enroll Now
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
@@ -186,10 +186,10 @@ export default function TrainingPage() {
           </div>
           <div className="flex flex-wrap gap-3">
             <Button asChild magnetic>
-              <Link href="/contact">Schedule Consultation</Link>
+              <Link href={companyInfo.phoneHref}>Call for Enrollment</Link>
             </Button>
             <Button variant="outline" asChild>
-              <Link href="/events">
+              <Link href={companyInfo.whatsappHref} target="_blank" rel="noreferrer">
                 Explore Workshops
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
