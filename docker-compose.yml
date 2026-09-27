@@ -7,3 +7,10 @@ services:
     restart: unless-stopped
     ports:
       - '3001:3000'
+    environment:
+      BILLING_DATA_DIR: /app/billing-data
+    volumes:
+      - billing-data:/app/billing-data
+
+volumes:
+  billing-data:

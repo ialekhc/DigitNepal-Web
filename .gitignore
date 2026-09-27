@@ -37,3 +37,7 @@ pnpm-debug.log*
 
 # Generated output
 backend/generated
+
+# Private billing records
+.billing-data/
+*.tsbuildinfo
