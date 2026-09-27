@@ -13,6 +13,10 @@
     "clean:artifacts": "rm -rf frontend/.next",
     "clean:deps": "rm -rf node_modules frontend/node_modules",
     "clean": "npm run clean:artifacts",
-    "dev:web": "npm run dev --workspace @digitnepal/frontend"
+    "dev:web": "npm run dev --workspace @digitnepal/frontend",
+    "test:billing": "node scripts/test-billing.mjs"
+  },
+  "engines": {
+    "node": ">=24"
   }
 }

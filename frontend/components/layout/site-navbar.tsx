@@ -1,7 +1,7 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { Menu, ShieldCheck, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -48,7 +48,7 @@ export function SiteNavbar() {
             <Image src="/brand/logo-light.png" alt="Digit Nepal" width={214} height={112} priority className="h-10 w-auto" />
           </Link>
 
-          <nav className="hidden items-center gap-6 lg:flex">
+          <nav className="hidden items-center gap-3 xl:flex 2xl:gap-5" aria-label="Main navigation">
             {primaryNavigation.map((item) => (
               <Link
                 key={item.href}
@@ -62,10 +62,13 @@ export function SiteNavbar() {
             <Button asChild size="sm" magnetic>
               <Link href={companyInfo.phoneHref}>Start Your Project</Link>
             </Button>
+            <Button asChild size="sm" className="gap-2" magnetic>
+              <Link href="/admin"><ShieldCheck size={16} />Admin</Link>
+            </Button>
           </nav>
 
           <button
-            className="inline-flex rounded-xl border border-white/15 bg-white/[0.04] p-2 text-slate-100 lg:hidden"
+            className="inline-flex rounded-xl border border-white/15 bg-white/[0.04] p-2 text-slate-100 xl:hidden"
             onClick={() => setOpen((v) => !v)}
             aria-label="Toggle Menu"
             aria-expanded={open}
@@ -80,7 +83,7 @@ export function SiteNavbar() {
           <>
             <motion.button
               type="button"
-              className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden"
+              className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm xl:hidden"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -88,7 +91,7 @@ export function SiteNavbar() {
               aria-label="Close mobile menu overlay"
             />
             <motion.aside
-              className="fixed right-0 top-0 z-50 h-full w-[min(90vw,24rem)] border-l border-white/15 bg-[#050816]/96 p-5 backdrop-blur-xl lg:hidden"
+              className="fixed right-0 top-0 z-50 h-full w-[min(90vw,24rem)] overflow-y-auto border-l border-white/15 bg-[#050816]/96 p-5 backdrop-blur-xl xl:hidden"
               variants={mobileMenuSlide}
               initial="closed"
               animate="open"
@@ -122,6 +125,11 @@ export function SiteNavbar() {
                   </motion.div>
                 ))}
               </motion.nav>
+
+              <div className="mt-5 flex flex-wrap gap-3">
+                <Button asChild size="sm"><Link href={companyInfo.phoneHref}>Start Your Project</Link></Button>
+                <Button asChild size="sm" className="gap-2"><Link href="/admin"><ShieldCheck size={16} />Admin</Link></Button>
+              </div>
 
               <div className="mt-6 border-t border-white/10 pt-4">
                 <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-slate-300/80">Follow Digit Nepal</p>
