@@ -4,61 +4,42 @@ Company website and protected billing workspace for Digit Nepal built with Next.
 
 ## Structure
 
-```text
-DigitNepal-Web/
-├── frontend/
-│   ├── app/
-│   ├── components/
-│   ├── constants/
-│   ├── layouts/
-│   ├── lib/
-│   ├── public/
-│   └── package.json
-├── .env.example
-├── docker-compose.yml
-├── package.json
-└── README.md
-```
+- `client/`: Next.js website and billing interface, deployed to Vercel.
+- `server/`: billing API and authentication, deployed to Render.
+- `shared/`: billing types, validation and calculations used by both.
+- `scripts/`: billing integration checks and one-time SQLite migration.
 
 ## Requirements
 
-- Node.js 24+ (built-in SQLite support)
+- Node.js 24+
 - npm 10+
+- PostgreSQL 17+ (local or managed)
 
-## Local Development
+## Local development
 
-```bash
-npm install
-npm run dev
-```
+Run `npm ci`, copy `.env.example` to `.env`, and set a dedicated PostgreSQL database URL plus a strong `ADMIN_PASSWORD`. Start the server with `npm run dev:server` and the client with `npm run dev` in separate terminals. The client runs at `http://localhost:3000`; the server runs at `http://localhost:4000`.
 
-Website runs at `http://localhost:3000`.
+For Docker, set `POSTGRES_PASSWORD` and `ADMIN_PASSWORD` in `.env`, then run `docker compose up --build`. The client is available at `http://localhost:3001`. PostgreSQL data is stored in the named Docker volume.
 
-## Production Build
+## Deployment
 
-```bash
-npm run build
-npm run start
-```
+1. Create a managed PostgreSQL database with production backups. Render's free PostgreSQL instances expire after 30 days, so use a lasting database plan/provider for billing data.
+2. Create the Render web service from `render.yaml`. Set `DATABASE_URL` and a strong `ADMIN_PASSWORD` as secret environment variables. Keep `FRONTEND_ORIGIN=https://finance.digitnepal.com`.
+3. Create a Vercel project from this repository. The root `vercel.json` builds `client/`. Set `BILLING_SERVER_URL` to the Render service HTTPS origin, with no trailing slash.
+4. Attach `finance.digitnepal.com` to the Vercel project and add the DNS record Vercel specifies in Cloudflare. Verify the login, authenticated billing API, exports, and persistence after a Render restart.
 
-## Docker
-
-```bash
-docker compose up --build
-```
-
-Website runs at `http://localhost:3001`.
+The browser calls `/api/admin/*` on the Vercel domain; Next.js forwards those paths to Render. Sessions use an HttpOnly, Secure, SameSite=Strict cookie on the frontend domain. The Render API accepts state-changing requests only from `FRONTEND_ORIGIN`.
 
 ## Notes
 
-- Public content is frontend-rendered; admin authentication and billing use Next.js server routes.
+- Public content is rendered by Next.js; admin authentication and billing requests are handled by the separate server.
 - Contact, event registration, and career application forms work as frontend mailto flows.
-- All public content is driven from local constants and fallback data inside `frontend/lib/`.
+- All public content is driven from local constants and fallback data inside `client/lib/`.
 
 
 ## Admin billing workspace
 
-Open **Admin** beside **Start Your Project**, or `/admin`. The initial account is **admin** with password **Argentina** (case-sensitive). Change the password in Settings. `ADMIN_PASSWORD` can override the initial password before the database is created; changing the environment later does not reset an existing account.
+Open **Admin** beside **Start Your Project**, or `/admin`. The initial account is **admin** with the `ADMIN_PASSWORD` configured on the server. Set a unique password of at least 12 characters before the first login. Changing the environment later does not reset an existing account; change the password in Settings.
 
 ### Billing workflows
 
@@ -76,27 +57,12 @@ New workspaces contain no demonstration transactions. Payment methods such as eS
 
 ### Accounts and storage
 
-Admins manage company details, staff access and backups. Accountants manage billing records. Viewers can read and export financial records. Each user can change their own password. Passwords are salted and scrypt-hashed; sessions are opaque, revocable, HttpOnly and SameSite=Strict, and expire after eight hours. Password changes and deactivation revoke existing sessions. Login throttling is stored in SQLite (five failed attempts per username in 15 minutes). Serve production over HTTPS for Secure session cookies.
+Admins manage company details, staff access and exports. Accountants manage billing records. Viewers can read and export financial records. Passwords are salted and scrypt-hashed; sessions are opaque, revocable, HttpOnly and SameSite=Strict, and expire after eight hours. Password changes and deactivation revoke existing sessions. Login throttling is stored in PostgreSQL.
 
-Billing data, accounts, session hashes and the audit trail live in `frontend/.billing-data/billing.sqlite` when started through workspace commands. `BILLING_DATA_DIR` can select another absolute persistent directory. Docker Compose uses a named volume. The SQLite database uses WAL and transactional writes, unique numbering, request deduplication and optimistic checks when editing drafts/company details. Use one Node.js 24+ deployment with persistent local storage. Separate replicas or ephemeral/serverless hosts require a shared database design.
+Billing data, users, session hashes and the audit trail are stored in managed PostgreSQL. Billing updates lock the workspace row and commit with account changes in one transaction; request IDs prevent duplicate saves. Set up database backups and retention with the managed provider. The Admin JSON export contains billing records but not account credentials.
 
-On the first load, an existing version-1 `billing.json` is validated and migrated automatically. The original is preserved and copied to `backups/legacy-*.json`. Previously paid invoices become issued invoices with payment receipts. Invalid legacy files are left untouched and reported as a storage error rather than overwritten.
-
-### Backups and restore
-
-After initialization and every successful billing mutation, SQLite creates a consistent full snapshot at `backups/billing-YYYY-MM-DD.sqlite`. Today's snapshot is replaced with the latest successful copy; previous days remain. Settings shows the latest backup date and any backup failure. These copies are on the same disk: copy snapshots to a separate secure location for device-failure recovery and manage retention according to your needs. Full snapshots contain password hashes and session records; restrict access to them.
-
-To restore a full snapshot: stop the application, preserve the current data directory, place the chosen snapshot at `BILLING_DATA_DIR/billing.sqlite` in a clean directory (do not reuse an old `-wal` or `-shm` file), then restart with that directory. Restoring rolls the entire workspace and accounts back to that snapshot. With the server stopped, clear restored sessions using Node 24 to require fresh logins:
-
-```js
-const { DatabaseSync } = require('node:sqlite');
-const db = new DatabaseSync('/absolute/path/to/billing.sqlite');
-db.exec('DELETE FROM sessions');
-db.close();
-```
-
-The downloadable JSON is a portable financial export, not a full account/database restore file. No web restore endpoint is exposed.
+To migrate an existing version-2 SQLite workspace, keep the source database and its WAL file together, provision an empty PostgreSQL database, and run `SQLITE_PATH=/absolute/path/to/billing.sqlite DATABASE_URL=postgresql://... npm run migrate:billing` before the first production login. The importer refuses a destination containing accounts or billing records and does not copy sessions. Retain a separate copy of the SQLite database until the migrated workspace has been verified.
 
 ### Verification
 
-After `npm run build`, run `npm run test:billing`. The suite starts an isolated production server on port 3101 (override with `BILLING_TEST_PORT`) and verifies authentication, role enforcement, legacy migration, invoice lifecycle, payment boundaries, quotations, milestones, recurring dates, exports, backups and persistence. It never uses the live workspace data.
+Set `BILLING_TEST_DATABASE_URL` to a disposable PostgreSQL database whose name ends in `_test`, then run `npm run test:billing`. The suite clears that test database, starts the API on port 3101 (override with `BILLING_TEST_PORT`), and verifies authentication, roles, billing lifecycle, exports and persistence. Never point this variable at production data.
