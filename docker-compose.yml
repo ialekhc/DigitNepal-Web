@@ -1,16 +1,43 @@
 services:
-  frontend:
+  database:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: digitnepal
+      POSTGRES_USER: digitnepal
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U digitnepal -d digitnepal"]
+      interval: 5s
+      retries: 10
+
+  server:
     build:
       context: .
-      dockerfile: frontend/Dockerfile
-    container_name: digit-nepal-frontend
+      dockerfile: server/Dockerfile
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://digitnepal:${POSTGRES_PASSWORD}@database:5432/digitnepal
+      FRONTEND_ORIGIN: http://localhost:3001
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Set ADMIN_PASSWORD in .env}
+      PORT: 4000
+    depends_on:
+      database:
+        condition: service_healthy
+
+  client:
+    build:
+      context: .
+      dockerfile: client/Dockerfile
     restart: unless-stopped
     ports:
       - '3001:3000'
     environment:
-      BILLING_DATA_DIR: /app/billing-data
-    volumes:
-      - billing-data:/app/billing-data
+      BILLING_SERVER_URL: http://server:4000
+    depends_on:
+      - server
 
 volumes:
-  billing-data:
+  postgres-data:

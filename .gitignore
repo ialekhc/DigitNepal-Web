@@ -1,25 +1,25 @@
 # Dependencies
 node_modules
-frontend/node_modules
-backend/node_modules
+client/node_modules
+server/node_modules
 
 # Environment files
 .env
 .env.*
 !.env.example
 !.env.production.example
-!frontend/.env.example
-!backend/.env.example
+!client/.env.example
+!server/.env.example
 
 # Build artifacts
 .next
 dist
 coverage
 .turbo
-frontend/.next
-backend/dist
-frontend/.turbo
-backend/.turbo
+client/.next
+server/dist
+client/.turbo
+server/.turbo
 
 # Deployment/local metadata
 .vercel
@@ -36,7 +36,7 @@ pnpm-debug.log*
 .vscode
 
 # Generated output
-backend/generated
+server/generated
 
 # Private billing records
 .billing-data/

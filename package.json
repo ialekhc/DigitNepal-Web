@@ -3,18 +3,17 @@
   "version": "1.0.0",
   "private": true,
   "workspaces": [
-    "frontend"
+    "client",
+    "server",
+    "shared"
   ],
   "scripts": {
-    "dev": "npm run dev --workspace @digitnepal/frontend",
-    "build": "npm run build --workspace @digitnepal/frontend",
-    "start": "npm run start --workspace @digitnepal/frontend",
-    "lint": "npm run lint --workspace @digitnepal/frontend",
-    "clean:artifacts": "rm -rf frontend/.next",
-    "clean:deps": "rm -rf node_modules frontend/node_modules",
-    "clean": "npm run clean:artifacts",
-    "dev:web": "npm run dev --workspace @digitnepal/frontend",
-    "test:billing": "node scripts/test-billing.mjs"
+    "dev": "npm run dev --workspace @digitnepal/client",
+    "dev:server": "npm run dev --workspace @digitnepal/server",
+    "build": "npm run build --workspace @digitnepal/client",
+    "start": "npm run start --workspace @digitnepal/client",
+    "test:billing": "node scripts/test-billing.mjs",
+    "migrate:billing": "tsx scripts/migrate-billing.mjs"
   },
   "engines": {
     "node": ">=24"
