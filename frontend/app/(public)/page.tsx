@@ -528,6 +528,18 @@ export default function HomePage() {
             ))}
           </motion.div>
         </AnimatePresence>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <Button variant="outline" asChild>
+            <Link href="/portfolio">
+              View Full Portfolio <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </Button>
+          <Button variant="ghost" asChild>
+            <a href="/documents/digitnepal-portfolio.pdf" target="_blank" rel="noreferrer">
+              Download Company Portfolio
+            </a>
+          </Button>
+        </div>
       </section>
 
       <section className="section-wrap pb-16 sm:pb-20">
