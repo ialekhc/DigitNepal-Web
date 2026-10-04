@@ -34,7 +34,7 @@ export function AdminLogin() {
   }
 
   return <main className="billing-login">
-    <Link href="/" className="billing-back"><ArrowLeft size={17} />Back to website</Link>
+    <Link href="https://digitnepal.com" className="billing-back"><ArrowLeft size={17} />Back to website</Link>
     <div className="login-composition">
       <section className="login-story">
         <Image src="/brand/logo-light.png" alt="Digit Nepal" width={214} height={112} className="billing-logo" priority />
