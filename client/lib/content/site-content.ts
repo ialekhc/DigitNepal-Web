@@ -117,24 +117,34 @@ export const whyChooseItems = [
 
 export const portfolioPreviewProjects = [
   {
-    name: 'Multi-Vendor POS Platform',
-    industry: 'Retail & Hospitality',
+    name: 'Inventory Management System',
+    industry: 'Business Operations',
     technologies: ['Next.js', 'NestJS', 'PostgreSQL'],
   },
   {
-    name: 'Hospital Management Suite',
-    industry: 'Healthcare',
-    technologies: ['React', 'Node.js', 'Prisma'],
+    name: 'DokoMandu',
+    industry: 'Mobile Platform / FoodTech',
+    technologies: ['Flutter', 'Node.js', 'Firebase'],
   },
   {
-    name: 'Hotel Booking System',
-    industry: 'Hospitality',
-    technologies: ['Next.js', 'TypeScript', 'PostgreSQL'],
+    name: 'Restaurant-POS',
+    industry: 'Restaurant Technology',
+    technologies: ['Next.js', 'Node.js', 'PostgreSQL'],
   },
   {
-    name: 'Citizen Complaint Portal',
-    industry: 'Public Service',
-    technologies: ['React', 'NestJS', 'Cloudinary'],
+    name: 'Human Resource Management',
+    industry: 'Enterprise / HR',
+    technologies: ['React', 'Node.js', 'PostgreSQL'],
+  },
+  {
+    name: 'Cardio Clinic Management System',
+    industry: 'HealthTech',
+    technologies: ['React', 'Node.js', 'PostgreSQL'],
+  },
+  {
+    name: 'Eye Clinic Management System',
+    industry: 'HealthTech',
+    technologies: ['React', 'Node.js', 'PostgreSQL'],
   },
 ] as const;
 
