@@ -4,6 +4,14 @@ import path from 'node:path';
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   transpilePackages: ['@digitnepal/shared'],
+  async redirects() {
+    return [{
+      source: '/',
+      has: [{ type: 'host' as const, value: 'finance.digitnepal.com' }],
+      destination: '/admin',
+      permanent: false,
+    }];
+  },
   async rewrites() {
     if (process.env.VERCEL && !process.env.BILLING_SERVER_URL) return [];
     const backend = process.env.BILLING_SERVER_URL || 'http://127.0.0.1:4000';

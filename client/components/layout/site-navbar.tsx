@@ -63,7 +63,7 @@ export function SiteNavbar() {
               <Link href={companyInfo.phoneHref}>Start Your Project</Link>
             </Button>
             <Button asChild size="sm" className="gap-2" magnetic>
-              <Link href="/admin"><ShieldCheck size={16} />Admin</Link>
+              <Link href="https://finance.digitnepal.com/admin"><ShieldCheck size={16} />Admin</Link>
             </Button>
           </nav>
 
@@ -128,7 +128,7 @@ export function SiteNavbar() {
 
               <div className="mt-5 flex flex-wrap gap-3">
                 <Button asChild size="sm"><Link href={companyInfo.phoneHref}>Start Your Project</Link></Button>
-                <Button asChild size="sm" className="gap-2"><Link href="/admin"><ShieldCheck size={16} />Admin</Link></Button>
+                <Button asChild size="sm" className="gap-2"><Link href="https://finance.digitnepal.com/admin"><ShieldCheck size={16} />Admin</Link></Button>
               </div>
 
               <div className="mt-6 border-t border-white/10 pt-4">
