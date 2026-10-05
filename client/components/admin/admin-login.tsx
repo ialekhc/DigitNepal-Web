@@ -5,6 +5,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowLeft, ArrowRight, Check, Eye, EyeOff, LockKeyhole, ShieldCheck, Sparkles } from 'lucide-react';
 
+const unavailableMessage = 'Billing service is unavailable. Please try again later.';
+
 export function AdminLogin() {
   const [visible, setVisible] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -27,10 +29,11 @@ export function AdminLogin() {
       const password = form.get('password');
       const username = form.get('username');
       const response = await fetch('/api/admin/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, password }) });
-      const data = await response.json();
+      if (response.status === 404 || response.status >= 500 || !response.headers.get('content-type')?.includes('application/json')) throw new Error(unavailableMessage);
+      const data = await response.json().catch(() => { throw new Error(unavailableMessage); });
       if (!response.ok) throw new Error(data.error || 'Unable to sign in. Please try again.');
       window.location.assign('/admin/dashboard');
-    } catch (err) { setError(err instanceof Error ? err.message : 'Unable to connect. Please try again.'); setBusy(false); }
+    } catch (err) { setError(err instanceof TypeError ? unavailableMessage : err instanceof Error ? err.message : unavailableMessage); setBusy(false); }
   }
 
   return <main className="billing-login">
