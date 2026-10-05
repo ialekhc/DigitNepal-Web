@@ -12,7 +12,7 @@ const nextConfig: NextConfig = {
         destination: '/admin',
         permanent: false,
       },
-      ...['digitnepal.com', 'www.digitnepal.com'].map(host => ({
+      ...['digitnepal.com', 'www.digitnepal.com', 'frontend-delta-five-29.vercel.app'].map(host => ({
         source: '/admin/:path*',
         has: [{ type: 'host' as const, value: host }],
         destination: 'https://finance.digitnepal.com/admin/:path*',
