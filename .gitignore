@@ -1,7 +1,6 @@
 # Dependencies
 node_modules
 client/node_modules
-server/node_modules
 
 # Environment files
 .env
@@ -9,7 +8,6 @@ server/node_modules
 !.env.example
 !.env.production.example
 !client/.env.example
-!server/.env.example
 
 # Build artifacts
 .next
@@ -17,9 +15,7 @@ dist
 coverage
 .turbo
 client/.next
-server/dist
 client/.turbo
-server/.turbo
 
 # Deployment/local metadata
 .vercel
@@ -36,8 +32,6 @@ pnpm-debug.log*
 .vscode
 
 # Generated output
-server/generated
 
 # Private billing records
-.billing-data/
 *.tsbuildinfo

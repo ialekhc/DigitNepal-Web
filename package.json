@@ -3,17 +3,12 @@
   "version": "1.0.0",
   "private": true,
   "workspaces": [
-    "client",
-    "server",
-    "shared"
+    "client"
   ],
   "scripts": {
     "dev": "npm run dev --workspace @digitnepal/client",
-    "dev:server": "npm run dev --workspace @digitnepal/server",
     "build": "npm run build --workspace @digitnepal/client",
-    "start": "npm run start --workspace @digitnepal/client",
-    "test:billing": "node scripts/test-billing.mjs",
-    "migrate:billing": "tsx scripts/migrate-billing.mjs"
+    "start": "npm run start --workspace @digitnepal/client"
   },
   "engines": {
     "node": ">=24"
